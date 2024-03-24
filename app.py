@@ -48,13 +48,13 @@ def callback():
 serial_port = 'COM3'  # 請根據你的系統及 Arduino 連接埠進行調整
 baudrate = 9600
 ser = serial(serial_port, baudrate, timeout=1)
+
+# 處理訊息
+@handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # 接收使用者傳送的訊息
-    user_message = event.message.text
-    
+    user_message = event.message.text    # 接收使用者傳送的訊息
     # 回傳相同的訊息給使用者
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_message))
-    
     # 將訊息傳送到 Arduino 顯示
     send_to_arduino(user_message)
 
@@ -64,36 +64,30 @@ def send_to_arduino(user_message):
     ser.write(user_message.encode())
 
 
+    #     message = imagemap_message()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif '最新活動訊息' in msg:
+    #     message = buttons_message()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif '註冊會員' in msg:
+    #     message = Confirm_Template()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif '旋轉木馬' in msg:
+    #     message = Carousel_Template()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif '圖片畫廊' in msg:
+    #     message = test()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # elif '功能列表' in msg:
+    #     message = function_list()
+    #     line_bot_api.reply_message(event.reply_token, message)
+    # else:
+    #     message = TextSendMessage(text=msg)
+    #     line_bot_api.reply_message(event.reply_token, message)
 
-# 處理訊息
-# @handler.add(MessageEvent, message=TextMessage)
-# def handle_message(event):
-#     msg = event.message.text
-#     if '最新合作廠商' in msg:
-#         message = imagemap_message()
-#         line_bot_api.reply_message(event.reply_token, message)
-#     elif '最新活動訊息' in msg:
-#         message = buttons_message()
-#         line_bot_api.reply_message(event.reply_token, message)
-#     elif '註冊會員' in msg:
-#         message = Confirm_Template()
-#         line_bot_api.reply_message(event.reply_token, message)
-#     elif '旋轉木馬' in msg:
-#         message = Carousel_Template()
-#         line_bot_api.reply_message(event.reply_token, message)
-#     elif '圖片畫廊' in msg:
-#         message = test()
-#         line_bot_api.reply_message(event.reply_token, message)
-#     elif '功能列表' in msg:
-#         message = function_list()
-#         line_bot_api.reply_message(event.reply_token, message)
-#     else:
-#         message = TextSendMessage(text=msg)
-#         line_bot_api.reply_message(event.reply_token, message)
-
-# @handler.add(PostbackEvent)
-# def handle_message(event):
-#     print(event.postback.data)
+@handler.add(PostbackEvent)
+def handle_message(event):
+    print(event.postback.data)
 
 
 # @handler.add(MemberJoinedEvent)
