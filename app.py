@@ -19,6 +19,7 @@ from Function import *
 import tempfile, os
 import datetime
 import time
+import serial
 #======python的函數庫==========
 
 app = Flask(__name__)
@@ -43,13 +44,24 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
-
+    
+serial_port = 'COM3'  # 請根據你的系統及 Arduino 連接埠進行調整
+baudrate = 9600
+ser = serial.Serial(serial_port, baudrate, timeout=1)
 def handle_message(event):
     # 接收使用者傳送的訊息
     user_message = event.message.text
     
     # 回傳相同的訊息給使用者
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_message))
+    
+    # 將訊息傳送到 Arduino 顯示
+    send_to_arduino(user_message)
+
+# 將訊息傳送到 Arduino 的函式
+def send_to_arduino(user_message):
+    # 將訊息轉為位元組並傳送到 Arduino
+    ser.write(user_message.encode())
 
 
 
