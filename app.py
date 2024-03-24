@@ -47,7 +47,7 @@ def callback():
     
 serial_port = 'COM3'  # 請根據你的系統及 Arduino 連接埠進行調整
 baudrate = 9600
-ser = serial.Serial(serial_port, baudrate, timeout=1)
+ser = serial(serial_port, baudrate, timeout=1)
 def handle_message(event):
     # 接收使用者傳送的訊息
     user_message = event.message.text
