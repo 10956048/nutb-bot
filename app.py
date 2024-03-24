@@ -49,8 +49,7 @@ def handle_message(event):
     user_message = event.message.text
     
     # 回傳相同的訊息給使用者
-    # line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_message))
-    print("已接收")
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_message))
     
     # 將訊息傳送到 Arduino 顯示
     send_to_arduino(user_message)
